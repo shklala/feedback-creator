@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Session Issue Report Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 20px auto;
+      line-height: 1.6;
+    }
+    h1 { text-align: center; }
+    .field { margin-bottom: 12px; }
+    label { display: block; font-weight: bold; margin-bottom: 4px; }
+    input, textarea { width: 100%; padding: 6px; box-sizing: border-box; }
+    button { padding: 8px 16px; cursor: pointer; margin-top: 10px; }
+    #outputBox {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 12px;
+      white-space: pre-wrap;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Session Issue Report</h1>
+  <p>Fill the form and click Generate to get the message for Moderation.</p>
+
+  <form id="dataForm">
+    <div id="questions"></div>
+    <button type="submit">Generate</button>
+  </form>
+
+  <h2>Result</h2>
+  <div id="outputBox"></div>
+
+  <script>
+    const templateConfig = {
+      title: "Moderation Issue Report",
+      fields: [
+        { name: "studentName", label: "Student Name", type: "text" },
+        { name: "studentCode", label: "Student Code", type: "text" },
+        { name: "date", label: "Date", type: "date" },
+        { name: "grade", label: "Grade", type: "text" },
+        { name: "issue", label: "Issue Description", type: "textarea" }
+      ],
+      outputTemplate: `
+      @channel 
+Session Issue Report
+
+Student Name: {{studentName}}
+Student Code: {{studentCode}}
+Date: {{date}}
+Grade: {{grade}}
+
+Issue:
+{{issue}}
+
+Please check and resolve this issue for the session.
+Thank you.
+`
+    };
+
+    const questionsDiv = document.getElementById("questions");
+
+    templateConfig.fields.forEach(field => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "field";
+
+      const label = document.createElement("label");
+      label.textContent = field.label;
+      label.setAttribute("for", field.name);
+
+      let input;
+
+      if (field.type === "textarea") {
+        input = document.createElement("textarea");
+      } else {
+        input = document.createElement("input");
+        input.type = field.type;
+      }
+
+      input.id = field.name;
+      input.name = field.name;
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(input);
+      questionsDiv.appendChild(wrapper);
+    });
+
+    const form = document.getElementById("dataForm");
+    const outputBox = document.getElementById("outputBox");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      let result = templateConfig.outputTemplate;
+
+      result = result.replace(/{{(.*?)}}/g, (match, fieldName) => {
+        const value = formData.get(fieldName.trim());
+        return value || "(missing)";
+      });
+
+      outputBox.textContent = result.trim();
+    });
+  </script>
+
+</body>
+</html>
