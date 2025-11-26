@@ -66,7 +66,8 @@
         }
 
         input,
-        textarea {
+        textarea,
+        select {
             width: 100%;
             padding: 12px 16px;
             box-sizing: border-box;
@@ -79,7 +80,8 @@
         }
 
         input:focus,
-        textarea:focus {
+        textarea:focus,
+        select:focus {
             outline: none;
             border-color: #667eea;
             background: white;
@@ -87,7 +89,8 @@
         }
 
         input:hover,
-        textarea:hover {
+        textarea:hover,
+        select:hover {
             border-color: #cbd5e0;
         }
 
@@ -275,12 +278,58 @@
     <div class="container">
         <div class="header">
             <h1>Session Issue Report</h1>
-            <p>Fill the form and click Generate to get the message for Moderation.</p>
+            <p>Select the issue category and type to generate a report for Moderation.</p>
         </div>
 
         <div class="content">
             <form id="dataForm">
-                <div id="questions"></div>
+                <div class="field">
+                    <label for="issueCategory">Issue Category</label>
+                    <select id="issueCategory" name="issueCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Technical & Joining Issues">Technical & Joining Issues</option>
+                        <option value="Student Behavior & Engagement Issues">Student Behavior & Engagement Issues
+                        </option>
+                        <option value="Session Logistics & Attendance">Session Logistics & Attendance</option>
+                        <option value="Tutor & Platform Account Issues">Tutor & Platform Account Issues</option>
+                        <option value="Minecraft & Software Issues">Minecraft & Software Issues</option>
+                        <option value="Additional Problems">Additional Problems</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="issueType">Issue Type</label>
+                    <select id="issueType" name="issueType" disabled required>
+                        <option value="">Select Category First</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="sessionSlot">Session Slot</label>
+                    <select id="sessionSlot" name="sessionSlot" required>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:30 PM">4:30 PM</option>
+                        <option value="6:00 PM">6:00 PM</option>
+                        <option value="7:30 PM">7:30 PM</option>
+                        <option value="9:00 PM">9:00 PM</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" placeholder="S-123456" required>
+                </div>
+
+                <div class="field">
+                    <label for="notes">Notes to Moderation (Optional)</label>
+                    <textarea id="notes" name="notes" placeholder="Any extra details..."></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="issueDescription">Issue Description</label>
+                    <textarea id="issueDescription" name="issueDescription" required></textarea>
+                </div>
+
                 <button type="submit">Generate</button>
             </form>
 
@@ -304,79 +353,120 @@
     </div>
 
     <script>
-        const templateConfig = {
-            title: "Moderation Issue Report",
-            fields: [
-                { name: "studentName", label: "Student Name", type: "text" },
-                { name: "studentCode", label: "Student Code", type: "text" },
-                { name: "date", label: "Date", type: "date" },
-                { name: "grade", label: "Grade", type: "text" },
-                { name: "issue", label: "Issue Description", type: "textarea" }
-            ],
-            outputTemplate: `
-      @channel 
-Session Issue Report
-
-Student Name: {{studentName}}
-Student Code: {{studentCode}}
-Date: {{date}}
-Grade: {{grade}}
-
-Issue:
-{{issue}}
-
-Please check and resolve this issue for the session.
-Thank you.
-`
+        const issueData = {
+            "Technical & Joining Issues": {
+                "Audio Echo & Lag": "The student's connection is causing a severe echo and audio lag on Zoom, making conversation impossible. We've tried basic troubleshooting without success.",
+                "Zoom Join Failure": "The student cannot join the session and receives an 'Invalid Meeting ID' error. The meeting link appears to be incorrect or expired.",
+                "Frozen Video & Audio": "The student's video feed is frozen, and their audio is consistently breaking up, making communication very difficult.",
+                "Zoom Client Crash": "My Zoom client crashes repeatedly whenever I try to share the interactive whiteboard feature.",
+                "Poor Internet Connection": "The student has a consistently poor connection, resulting in pixelated video and broken, robotic audio that makes the lesson very difficult.",
+                "Microphone Not Working": "The student's microphone appears to be disabled or broken. They can hear me, but I cannot hear them. They have been unable to fix it.",
+                "Power/Internet Outage": "The student reported a sudden power outage in their area and cannot rejoin."
+            },
+            "Student Behavior & Engagement Issues": {
+                "Disruptive Behavior": "The student is being intentionally disruptive by drawing on the shared screen, refusing to participate, and leaving the session multiple times.",
+                "Verbal Disrespect": "The student is being verbally disrespectful, challenging instructions, and calling the lesson 'pointless,' creating a hostile environment.",
+                "Student Unresponsive": "The student is on camera but completely unresponsive. They do not answer questions verbally or via chat. It's unclear if they can hear or see me.",
+                "Passive Disengagement": "The student is visibly distracted, browsing other websites on camera, and only providing uninterested, one-word answers.",
+                "Excessive Background Noise": "There is persistent, loud background noise from the student's side, making it impossible to teach or for the student to focus.",
+                "Student in Public Place": "The student has joined the session from a noisy coffee shop. The background environment is very distracting and not conducive to learning.",
+                "Camera Off & Unresponsive": "The student refuses to turn on their camera and is not responding to my requests in the chat. Pinging the parent via the system has yielded no response.",
+                "Unscheduled Sibling Interference": "A younger sibling is repeatedly interfering with the session by talking loudly and trying to use the student's computer."
+            },
+            "Session Logistics & Attendance": {
+                "Parent No-Show": "This was a scheduled final presentation. The student's parents did not attend, despite prior confirmation, which has upset the student.",
+                "Parent Late & Early Departure": "For a progress review, the parents joined 15 minutes late and then left after only 5 minutes, significantly disrupting the session's structure.",
+                "Student is Unwell": "The student has joined the session but is visibly very sick (coughing, fatigued) and unable to focus or participate effectively. They should likely rest instead of continuing the session.",
+                "Session Not Frozen After Notice": "The student posted in the community channel that they could not attend today due to an emergency. However, the session was not frozen in the system, and I was required to be in the Zoom room for the full duration."
+            },
+            "Tutor & Platform Account Issues": {
+                "Tutor Portal Login Failure": "I am unable to log in to the iSchool tutor portal to get the lesson plan. The password reset function is not sending email.",
+                "SharePoint Access Denied": "My tutor MS account does not have permission to access the teaching materials folder on SharePoint. I am consistently getting an 'Access Denied' error."
+            },
+            "Minecraft & Software Issues": {
+                "Minecraft Login Failure (Student)": "The student cannot log into their Minecraft account. They are getting an 'Invalid credentials' error, so we cannot access the shared world.",
+                "Minecraft World Connection Issue": "The student is unable to connect to my hosted Minecraft world. They receive a 'Connection Timed Out' error repeatedly.",
+                "In-Game Lag & Latency": "There is significant lag and latency within the Minecraft world, making movement and interaction choppy and the lesson impractical.",
+                "Incorrect Minecraft Version": "The student's device is running an outdated version of Minecraft that is not compatible with the lesson's educational mods or world save."
+            },
+            "Additional Problems": {
+                "Incorrect Student in Session": "A different student (sibling) joined the session instead of the enrolled one. The correct student is not available.",
+                "Lost Minecraft World Progress": "The student accidentally corrupted or lost the progress on our shared project world, and the backup does not seem to have saved correctly.",
+                "Tutor Minecraft Account Issue": "My tutor Minecraft account is being flagged for 'suspicious activity' and is temporarily locked, preventing me from hosting the session.",
+                "Student Device Malfunction": "The student's laptop shut down unexpectedly due to a critical system update and will not be able to rejoin the session.",
+                "Unauthorized Recording": "The student openly stated or showed they are recording the session (video and audio) without the tutor's or platform's knowledge or consent, raising privacy and compliance concerns.",
+                "Parent Intervenes/Hovers": "A parent is constantly sitting just off-camera and interjecting with answers, correcting the student's work, or giving instructions, undermining the student's independence and the tutor's authority.",
+                "Incorrect Time Zone Issue": "The student logged in exactly on time according to their local clock, but the session has already started or hasn't started yet, indicating a scheduling conflict due to an unchecked time zone difference."
+            }
         };
 
-        const questionsDiv = document.getElementById("questions");
-
-        templateConfig.fields.forEach(field => {
-            const wrapper = document.createElement("div");
-            wrapper.className = "field";
-
-            const label = document.createElement("label");
-            label.textContent = field.label;
-            label.setAttribute("for", field.name);
-
-            let input;
-
-            if (field.type === "textarea") {
-                input = document.createElement("textarea");
-            } else {
-                input = document.createElement("input");
-                input.type = field.type;
-            }
-
-            input.id = field.name;
-            input.name = field.name;
-
-            wrapper.appendChild(label);
-            wrapper.appendChild(input);
-            questionsDiv.appendChild(wrapper);
-        });
-
+        const issueCategorySelect = document.getElementById("issueCategory");
+        const issueTypeSelect = document.getElementById("issueType");
+        const issueDescriptionTextarea = document.getElementById("issueDescription");
         const form = document.getElementById("dataForm");
         const outputBox = document.getElementById("outputBox");
         const copyButton = document.getElementById("copyButton");
         const copyButtonText = document.getElementById("copyButtonText");
         const copyFeedback = document.getElementById("copyFeedback");
 
+        // Populate Issue Type based on Category
+        issueCategorySelect.addEventListener("change", function () {
+            const category = this.value;
+            issueTypeSelect.innerHTML = '<option value="">Select Issue Type</option>';
+            issueDescriptionTextarea.value = "";
+
+            if (category && issueData[category]) {
+                issueTypeSelect.disabled = false;
+                Object.keys(issueData[category]).forEach(issue => {
+                    const option = document.createElement("option");
+                    option.value = issue;
+                    option.textContent = issue;
+                    issueTypeSelect.appendChild(option);
+                });
+            } else {
+                issueTypeSelect.disabled = true;
+                issueTypeSelect.innerHTML = '<option value="">Select Category First</option>';
+            }
+        });
+
+        // Auto-fill Description based on Issue Type
+        issueTypeSelect.addEventListener("change", function () {
+            const category = issueCategorySelect.value;
+            const issue = this.value;
+
+            if (category && issue && issueData[category][issue]) {
+                issueDescriptionTextarea.value = issueData[category][issue];
+            } else {
+                issueDescriptionTextarea.value = "";
+            }
+        });
+
+        // Generate Output
         form.addEventListener("submit", function (e) {
             e.preventDefault();
 
-            const formData = new FormData(form);
-            let result = templateConfig.outputTemplate;
+            const category = issueCategorySelect.value;
+            const issueType = issueTypeSelect.value;
+            const studentId = document.getElementById("studentId").value.trim();
+            const sessionSlot = document.getElementById("sessionSlot").value;
+            const notes = document.getElementById("notes").value.trim();
+            const description = issueDescriptionTextarea.value.trim();
 
-            result = result.replace(/{{(.*?)}}/g, (match, fieldName) => {
-                const value = formData.get(fieldName.trim());
-                return value || "(missing)";
-            });
+            let result = `${category.toUpperCase()}\n`;
+            result += `${issueType}\n`;
+            result += `@ModeratorName\n`;
+            result += `Student ID: ${studentId}\n`;
+            result += `Session Slot: ${sessionSlot}\n`;
+            result += `Issue Description: ${description}`;
 
-            outputBox.textContent = result.trim();
+            if (notes) {
+                result += `\n\nNotes: ${notes}`;
+            }
+
+            outputBox.textContent = result + "\n\nCould you please check it\nThanks and regards .";
         });
 
+        // Copy Functionality
         copyButton.addEventListener("click", async function () {
             const textToCopy = outputBox.textContent.trim();
 
@@ -386,20 +476,9 @@ Thank you.
 
             try {
                 await navigator.clipboard.writeText(textToCopy);
-
-                // Show feedback
-                copyFeedback.classList.add("show");
-                copyButton.classList.add("copied");
-                copyButtonText.textContent = "Copied!";
-
-                // Reset after 2 seconds
-                setTimeout(() => {
-                    copyFeedback.classList.remove("show");
-                    copyButton.classList.remove("copied");
-                    copyButtonText.textContent = "Copy";
-                }, 2000);
+                showCopyFeedback();
             } catch (err) {
-                // Fallback for older browsers
+                // Fallback
                 const textArea = document.createElement("textarea");
                 textArea.value = textToCopy;
                 textArea.style.position = "fixed";
@@ -409,24 +488,26 @@ Thank you.
 
                 try {
                     document.execCommand("copy");
-                    copyFeedback.classList.add("show");
-                    copyButton.classList.add("copied");
-                    copyButtonText.textContent = "Copied!";
-
-                    setTimeout(() => {
-                        copyFeedback.classList.remove("show");
-                        copyButton.classList.remove("copied");
-                        copyButtonText.textContent = "Copy";
-                    }, 2000);
+                    showCopyFeedback();
                 } catch (fallbackErr) {
                     alert("Failed to copy text. Please select and copy manually.");
                 }
-
                 document.body.removeChild(textArea);
             }
         });
-    </script>
 
+        function showCopyFeedback() {
+            copyFeedback.classList.add("show");
+            copyButton.classList.add("copied");
+            copyButtonText.textContent = "Copied!";
+
+            setTimeout(() => {
+                copyFeedback.classList.remove("show");
+                copyButton.classList.remove("copied");
+                copyButtonText.textContent = "Copy";
+            }, 2000);
+        }
+    </script>
 </body>
 
 </html>
