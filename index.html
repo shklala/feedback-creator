@@ -13,7 +13,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #589ce9;
+            /* Light Blue Background */
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
@@ -25,28 +26,39 @@
             margin: 0 auto;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            border: 1px solid #e5e7eb;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: #1e293b;
             padding: 40px 30px;
             text-align: center;
+            border-bottom: 5px solid #ffcc00;
+            /* iSchool Yellow */
+        }
+
+        .logo {
+            max-width: 250px;
+            margin-bottom: 15px;
+            display: inline-block;
         }
 
         h1 {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            color: #0061f2;
+            /* iSchool Blue */
         }
 
         .header p {
             font-size: 1rem;
-            opacity: 0.95;
+            opacity: 0.8;
             margin-top: 8px;
+            color: #374151;
         }
 
         .content {
@@ -61,7 +73,7 @@
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
-            color: #4a5568;
+            color: #374151;
             font-size: 0.95rem;
         }
 
@@ -71,21 +83,23 @@
             width: 100%;
             padding: 12px 16px;
             box-sizing: border-box;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e5e7eb;
             border-radius: 8px;
             font-size: 1rem;
             font-family: inherit;
             transition: all 0.3s ease;
-            background: #f7fafc;
+            background: #f9fafb;
+            color: #1f2937;
         }
 
         input:focus,
         textarea:focus,
         select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #0061f2;
+            /* Blue Focus */
             background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 97, 242, 0.15);
         }
 
         input:hover,
@@ -102,7 +116,8 @@
         button {
             width: 100%;
             padding: 14px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0061f2;
+            /* iSchool Blue */
             color: white;
             border: none;
             border-radius: 8px;
@@ -111,12 +126,13 @@
             cursor: pointer;
             margin-top: 10px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 6px rgba(0, 97, 242, 0.3);
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            background: #0052cc;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 12px rgba(0, 97, 242, 0.4);
         }
 
         button:active {
@@ -125,6 +141,8 @@
 
         .result-section {
             margin-top: 40px;
+            border-top: 2px solid #f3f4f6;
+            padding-top: 30px;
         }
 
         .result-header {
@@ -135,7 +153,7 @@
         }
 
         h2 {
-            color: #2d3748;
+            color: #1e293b;
             font-size: 1.5rem;
             font-weight: 700;
             margin: 0;
@@ -144,24 +162,26 @@
         .copy-button {
             display: flex;
             align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            gap: 6px;
+            padding: 8px 16px;
+            background: #ff6b00;
+            /* iSchool Orange */
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 0.8rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 2px 4px rgba(255, 107, 0, 0.2);
             width: auto;
             white-space: nowrap;
         }
 
         .copy-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: #e65c00;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 107, 0, 0.3);
         }
 
         .copy-button:active {
@@ -169,15 +189,15 @@
         }
 
         .copy-button.copied {
-            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-            box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+            background: #10b981;
+            /* Success Green */
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
         }
 
         .copy-icon {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             fill: currentColor;
-
         }
 
         .result-wrapper {
@@ -185,48 +205,48 @@
         }
 
         #outputBox {
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e5e7eb;
             border-radius: 12px;
             padding: 24px;
             white-space: pre-wrap;
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            background: #f8fafc;
             font-family: 'Courier New', monospace;
             font-size: 0.95rem;
-            line-height: 1.8;
-            color: #2d3748;
+            line-height: 1.6;
+            color: #334155;
             min-height: 120px;
             transition: all 0.3s ease;
             word-wrap: break-word;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
         }
 
         #outputBox:not(:empty) {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            border-color: #ffcc00;
+            /* Yellow Border */
+            background: white;
+            box-shadow: 0 4px 6px rgba(255, 204, 0, 0.15);
         }
 
         #outputBox:empty::before {
             content: "Generated result will appear here...";
-            color: #a0aec0;
+            color: #9ca3af;
             font-style: italic;
         }
 
         .copy-feedback {
             position: absolute;
-            top: -40px;
+            top: -45px;
             right: 0;
-            background: #48bb78;
+            background: #10b981;
             color: white;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 600;
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(10px);
             transition: all 0.3s ease;
             pointer-events: none;
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .copy-feedback.show {
@@ -262,7 +282,7 @@
             }
 
             .copy-feedback {
-                top: -35px;
+                top: -40px;
                 right: auto;
                 left: 0;
             }
@@ -277,6 +297,7 @@
 <body>
     <div class="container">
         <div class="header">
+            <img src="logo.png" alt="iSchool Logo" class="logo">
             <h1>Session Issue Report</h1>
             <p>Select the issue category and type to generate a report for Moderation.</p>
         </div>
